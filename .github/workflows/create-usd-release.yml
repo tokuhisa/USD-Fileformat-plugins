@@ -67,7 +67,6 @@ jobs:
           rm -rf ${{ github.workspace }}/usd_build/src
 
       - name: Set USD Paths to Environment variable to USD_BUILD_PATH
-        if: env.exists == 'false'
         shell: pwsh
         run: |
           $localPath = "/Users/runner/work/USD-Fileformat-plugins/USD-Fileformat-plugins/usd_build"
