@@ -66,6 +66,23 @@ jobs:
           rm -rf ${{ github.workspace }}/usd_build/share
           rm -rf ${{ github.workspace }}/usd_build/src
 
+      - name: Set USD Paths to Environment variable to USD_BUILD_PATH
+        if: env.exists == 'false'
+        shell: pwsh
+        run: |
+          $localPath = "/Users/runner/work/USD-Fileformat-plugins/USD-Fileformat-plugins/usd_build"
+          $files = @(
+            "${{ github.workspace }}/usd_build/cmake/pxrTargets.cmake",
+            "${{ github.workspace }}/usd_build/lib/cmake/OpenImageIO/OpenImageIOConfig.cmake",
+            "${{ github.workspace }}/usd_build/lib/cmake/OpenImageIO/OpenImageIOTargets.cmake"
+          )
+          $replacementPath = '${USD_BUILD_PATH}'
+          foreach ($file in $files) {
+            (Get-Content $file) -replace [regex]::Escape($localPath), $replacementPath | Set-Content $file
+            $content = 'set(USD_BUILD_PATH "$ENV{USD_BUILD_PATH}")' + "`r`n" + (Get-Content $file -Raw)
+            $content | Set-Content $file
+          }
+
       - name: Package Build Artifacts Unix
         run: |
           cd ${{ github.workspace }}/usd_build
