@@ -57,7 +57,7 @@ jobs:
           $env:LD_LIBRARY_PATH = "/usr/local/lib;$env:LD_LIBRARY_PATH"
           $abi_arg = ""
           $generator = "--generator Ninja"
-          $python_cmd = "python $file `${{ github.workspace }}/usd_build` --build-shared --openimageio --tools --python --debug-python --usd-imaging --build-variant release $abi_arg $generator"
+          $python_cmd = "python $file `${{ github.workspace }}/usd_build` --build-shared --openimageio --tools --no-python --usd-imaging --build-variant release $abi_arg $generator"
           Invoke-Expression $python_cmd
 
       - name: Remove Specific Folders Unix
